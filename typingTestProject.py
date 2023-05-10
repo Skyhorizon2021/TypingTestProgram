@@ -1,3 +1,7 @@
+# Names: Colin McGough, Loc Nguyen, Priyanshu Shekhar
+# Group: TheThe
+# Assignment: Team Final Project
+# Nothing special to run program, just ensure all modules are installed and run
 from tkinter import *
 import random
 import tkinter
@@ -10,16 +14,26 @@ root.title('Type Speed Test')
 root.geometry('1440x1080')
 
 # Setting the Font for all Labels and Buttons
-root.option_add("*Label.Font", "consolas 30")
+root.option_add("*Label.Font", "consolas 40")
 root.option_add("*Button.Font", "consolas 30")
 
+# Setting default time
 global totalTime
 totalTime = 60000
+# Setting wpmRecord
+global wpmRecord
+wpmRecord = 0
 
+
+# Creation of title screen buttons and logos
 def titleScreen():
     global titleLogo
-    titleLogo = Label(root, text=f'Typing Test', fg='black')
-    titleLogo.place(relx=0.5, rely=0.3, anchor=N)
+    titleLogo = Label(root, text=f'Typing Speed Test', fg='black', font="consolas 70")
+    titleLogo.place(relx=0.5, rely=0.1, anchor=N)
+
+    global sessionWPMrecord
+    sessionWPMrecord = Label(root, text=f'Session WPM Record: {wpmRecord}' if wpmRecord != 0 else f'Session WPM Record: None', fg='black')
+    sessionWPMrecord.place(relx=0.5, rely=0.2, anchor=N)
 
     global modeSelection
     modeSelection = Label(root, text=f'Duration: {int(totalTime/1000)}', fg='black')
@@ -29,6 +43,7 @@ def titleScreen():
     startTest = Button(root, text=f'Start', command=resetWritingLabels)
     startTest.place(relx=0.5, rely=0.6, anchor=CENTER)
 
+    # Sets different time limits
     global sixty
     sixty = Button(root, text=f'60 Secs', command=lambda: setTime(60000))
     sixty.place(relx=0.7, rely=0.7, anchor=W)
@@ -42,6 +57,7 @@ def titleScreen():
     fifteen.place(relx=0.2, rely=0.7, anchor=W)
 
 
+# Sets new total time and updates display
 def setTime(time):
     global totalTime
     global modeSelection
@@ -51,7 +67,7 @@ def setTime(time):
     modeSelection.place(relx=0.5, rely=0.4, anchor=N)
 
 
-# Helper function
+# Helper function to create necessary labels and start program
 def resetWritingLabels():
     titleLogo.destroy()
     startTest.destroy()
@@ -59,6 +75,8 @@ def resetWritingLabels():
     thirty.destroy()
     fifteen.destroy()
     modeSelection.destroy()
+    sessionWPMrecord.destroy()
+
     # Text List
     word_list = [
         "mask", "delete", "bishop", "long", "leak", "escape", "colony", "raise", "remedy", "yearn",
@@ -120,22 +138,30 @@ def resetWritingLabels():
 
 
 def stopTest():
+    # No longer able to write in program
     global writeable
     writeable = False
 
     # calculates amount of words typed
     amountWords = len(labelLeft.cget('text'))
-    wpm = amountWords//5
+    wpm = amountWords/5
     if totalTime == 15000:
         wpm *= 4
     elif totalTime == 30000:
         wpm *= 2
+    wpm = int(wpm)
+
+    # updates wpmRecord if necessary
+    global wpmRecord
+    if wpm > wpmRecord:
+        wpmRecord = wpm
 
     timeLeftLabel.destroy()
     currentLetterLabel.destroy()
     labelRight.destroy()
     labelLeft.destroy()
 
+    # Shows WPM
     global resultLabel
     resultLabel = Label(root, text=f'Words per Minute: {wpm}', fg='black')
     resultLabel.place(relx=0.5, rely=0.4, anchor=CENTER)
@@ -146,6 +172,7 @@ def stopTest():
     resultButton.place(relx=0.5, rely=0.6, anchor=CENTER)
 
 
+# destorys results and returns to title screen
 def restart():
     resultLabel.destroy()
     resultButton.destroy()
@@ -153,8 +180,9 @@ def restart():
     titleScreen()
 
 
+# adds time and displays current time
 def addSecond():
-    #bypass minor error
+    # bypass minor error
     try:
         global secondsPassed
         secondsPassed += 1
@@ -166,6 +194,7 @@ def addSecond():
         pass
 
 
+# Moves text if key press is correct
 def keyPress(event=None):
     try:
         if event.char.lower() == labelRight.cget('text')[0].lower():
