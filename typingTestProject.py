@@ -7,7 +7,7 @@ root = Tk()
 root.title('Type Speed Test')
 
 # Setting the starting window dimensions
-root.geometry('700x700')
+root.geometry('1080x720')
 
 # Setting the Font for all Labels and Buttons
 root.option_add("*Label.Font", "consolas 30")
@@ -16,7 +16,7 @@ root.option_add("*Button.Font", "consolas 30")
 
 def titleScreen():
     global titleLogo
-    titleLogo = Label(root, text=f'Typing Test', fg='white')
+    titleLogo = Label(root, text=f'Typing Test', fg='black')
     titleLogo.place(relx=0.5, rely=0.3, anchor=N)
 
     global startTest
@@ -39,8 +39,19 @@ def resetWritingLabels():
         "person", "think", "use", "train", "slip", "trace", "shape", "money", "club", "whole",
         "drama", "thaw", "offset", "smell", "essay", "review", "horn", "grudge", "unlike", "member",
         "barrel", "light", "right", "favor", "rich", "drill", "regret", "fur", "will", "pass",
-        "late", "turkey", "role", "throne", "settle", "sting", "tune", "preach"
+        "late", "turkey", "role", "throne", "settle", "sting", "tune", "preach", "python","programming","computer", 
+        "science", "typing", "politics", "education",
     ]
+    #list of all words in English language
+    '''all_word_list = []
+    with open("words_alpha.txt","r") as wordList:
+        for line in wordList:
+            all_word_list.extend(line.split())'''
+    #list of 3000 most common English words
+    '''word_list = []
+    with open("Word_List_3000.txt","r") as wordList:
+            for line in wordList:
+                word_list.extend(line.split())'''
     # Chosing one of the texts randomly with the choice function
     listCopy = word_list
     text = ""
@@ -96,7 +107,7 @@ def stopTest():
     labelLeft.destroy()
 
     global resultLabel
-    resultLabel = Label(root, text=f'Words per Minute: {amountWords}', fg='white')
+    resultLabel = Label(root, text=f'Words per Minute: {amountWords}', fg='black')
     resultLabel.place(relx=0.5, rely=0.4, anchor=CENTER)
 
     # button to restart
@@ -113,12 +124,15 @@ def restart():
 
 
 def addSecond():
-    global secondsPassed
-    secondsPassed += 1
-    timeLeftLabel.configure(text=f'{secondsPassed} Seconds')
+    try:
+        global secondsPassed
+        secondsPassed += 1
+        timeLeftLabel.configure(text=f'{secondsPassed} Seconds')
 
-    if writeable:
-        root.after(1000, addSecond)
+        if writeable:
+            root.after(1000, addSecond)
+    except:
+        pass
 
 
 def keyPress(event=None):
