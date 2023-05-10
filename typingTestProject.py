@@ -7,27 +7,58 @@ root = Tk()
 root.title('Type Speed Test')
 
 # Setting the starting window dimensions
-root.geometry('1080x720')
+root.geometry('700x700')
 
 # Setting the Font for all Labels and Buttons
 root.option_add("*Label.Font", "consolas 30")
 root.option_add("*Button.Font", "consolas 30")
 
+global totalTime
+totalTime = 60000
 
 def titleScreen():
     global titleLogo
-    titleLogo = Label(root, text=f'Typing Test', fg='black')
+    titleLogo = Label(root, text=f'Typing Test', fg='white')
     titleLogo.place(relx=0.5, rely=0.3, anchor=N)
+
+    global modeSelection
+    modeSelection = Label(root, text=f'Duration: {int(totalTime/1000)}', fg='white')
+    modeSelection.place(relx=0.5, rely=0.4, anchor=N)
 
     global startTest
     startTest = Button(root, text=f'Start', command=resetWritingLabels)
     startTest.place(relx=0.5, rely=0.6, anchor=CENTER)
+
+    global sixty
+    sixty = Button(root, text=f'60 Secs', command=lambda: setTime(60000))
+    sixty.place(relx=0.6, rely=0.7, anchor=W)
+
+    global thirty
+    thirty = Button(root, text=f'30 Secs', command=lambda: setTime(30000))
+    thirty.place(relx=0.5, rely=0.7, anchor=CENTER)
+
+    global fifteen
+    fifteen = Button(root, text=f'15 Secs', command=lambda: setTime(15000))
+    fifteen.place(relx=0.2, rely=0.7, anchor=W)
+
+
+def setTime(time):
+    global totalTime
+    global modeSelection
+    totalTime = time
+    modeSelection.destroy()
+    modeSelection = Label(root, text=f'Duration: {int(totalTime/1000)}', fg='white')
+    modeSelection.place(relx=0.5, rely=0.4, anchor=N)
 
 
 # Helper function
 def resetWritingLabels():
     titleLogo.destroy()
     startTest.destroy()
+    sixty.destroy()
+    thirty.destroy()
+    fifteen.destroy()
+    modeSelection.destroy()
     # Text List
     word_list = [
         "mask", "delete", "bishop", "long", "leak", "escape", "colony", "raise", "remedy", "yearn",
@@ -39,19 +70,13 @@ def resetWritingLabels():
         "person", "think", "use", "train", "slip", "trace", "shape", "money", "club", "whole",
         "drama", "thaw", "offset", "smell", "essay", "review", "horn", "grudge", "unlike", "member",
         "barrel", "light", "right", "favor", "rich", "drill", "regret", "fur", "will", "pass",
-        "late", "turkey", "role", "throne", "settle", "sting", "tune", "preach", "python","programming","computer", 
-        "science", "typing", "politics", "education",
+        "late", "turkey", "role", "throne", "settle", "sting", "tune", "preach",
+        "island", "flow", "bind", "beat", "strike", "cotton", "weigh", "block", "ridge", "blade",
+        "greet", "start", "rear", "occupy", "coffee", "effect", "quiet", "belly", "corpse", "bottom",
+        "exotic", "mayor", "full", "light", "punch", "knock", "low", "death", "bacon", "riot", "poem",
+        "image", "offend", "pace", "prison", "tent", "global", "grow", "misery", "tap", "upset", "trunk",
+        "bolt", "basic", "slam", "snarl", "shiver", "good", "stride", "single"
     ]
-    #list of all words in English language
-    '''all_word_list = []
-    with open("words_alpha.txt","r") as wordList:
-        for line in wordList:
-            all_word_list.extend(line.split())'''
-    #list of 3000 most common English words
-    '''word_list = []
-    with open("Word_List_3000.txt","r") as wordList:
-            for line in wordList:
-                word_list.extend(line.split())'''
     # Chosing one of the texts randomly with the choice function
     listCopy = word_list
     text = ""
@@ -90,7 +115,7 @@ def resetWritingLabels():
     global secondsPassed
     secondsPassed = 0
 
-    root.after(60000, stopTest)
+    root.after(totalTime, stopTest)
     root.after(1000, addSecond)
 
 
@@ -99,7 +124,12 @@ def stopTest():
     writeable = False
 
     # calculates amount of words typed
-    amountWords = len(labelLeft.cget('text').split(' '))
+    amountWords = len(labelLeft.cget('text'))
+    wpm = amountWords/5
+    if totalTime == 15000:
+        wpm *= 4
+    elif totalTime == 30000:
+        wpm *= 2
 
     timeLeftLabel.destroy()
     currentLetterLabel.destroy()
@@ -107,7 +137,7 @@ def stopTest():
     labelLeft.destroy()
 
     global resultLabel
-    resultLabel = Label(root, text=f'Words per Minute: {amountWords}', fg='black')
+    resultLabel = Label(root, text=f'Words per Minute: {wpm}', fg='white')
     resultLabel.place(relx=0.5, rely=0.4, anchor=CENTER)
 
     # button to restart
@@ -120,19 +150,16 @@ def restart():
     resultLabel.destroy()
     resultButton.destroy()
 
-    resetWritingLabels()
+    titleScreen()
 
 
 def addSecond():
-    try:
-        global secondsPassed
-        secondsPassed += 1
-        timeLeftLabel.configure(text=f'{secondsPassed} Seconds')
+    global secondsPassed
+    secondsPassed += 1
+    timeLeftLabel.configure(text=f'{secondsPassed} Seconds')
 
-        if writeable:
-            root.after(1000, addSecond)
-    except:
-        pass
+    if writeable:
+        root.after(1000, addSecond)
 
 
 def keyPress(event=None):
