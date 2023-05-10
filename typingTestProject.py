@@ -7,7 +7,7 @@ root = Tk()
 root.title('Type Speed Test')
 
 # Setting the starting window dimensions
-root.geometry('700x700')
+root.geometry('1440x1080')
 
 # Setting the Font for all Labels and Buttons
 root.option_add("*Label.Font", "consolas 30")
@@ -18,11 +18,11 @@ totalTime = 60000
 
 def titleScreen():
     global titleLogo
-    titleLogo = Label(root, text=f'Typing Test', fg='white')
+    titleLogo = Label(root, text=f'Typing Test', fg='black',bg="blue")
     titleLogo.place(relx=0.5, rely=0.3, anchor=N)
 
     global modeSelection
-    modeSelection = Label(root, text=f'Duration: {int(totalTime/1000)}', fg='white')
+    modeSelection = Label(root, text=f'Duration: {int(totalTime/1000)}', fg='black')
     modeSelection.place(relx=0.5, rely=0.4, anchor=N)
 
     global startTest
@@ -31,7 +31,7 @@ def titleScreen():
 
     global sixty
     sixty = Button(root, text=f'60 Secs', command=lambda: setTime(60000))
-    sixty.place(relx=0.6, rely=0.7, anchor=W)
+    sixty.place(relx=0.7, rely=0.7, anchor=W)
 
     global thirty
     thirty = Button(root, text=f'30 Secs', command=lambda: setTime(30000))
@@ -47,7 +47,7 @@ def setTime(time):
     global modeSelection
     totalTime = time
     modeSelection.destroy()
-    modeSelection = Label(root, text=f'Duration: {int(totalTime/1000)}', fg='white')
+    modeSelection = Label(root, text=f'Duration: {int(totalTime/1000)}', fg='black')
     modeSelection.place(relx=0.5, rely=0.4, anchor=N)
 
 
