@@ -14,14 +14,41 @@ root.option_add("*Label.Font", "consolas 30")
 root.option_add("*Button.Font", "consolas 30")
 
 
+def titleScreen():
+    global titleLogo
+    titleLogo = Label(root, text=f'Typing Test', fg='white')
+    titleLogo.place(relx=0.5, rely=0.3, anchor=N)
+
+    global startTest
+    startTest = Button(root, text=f'Start', command=resetWritingLabels)
+    startTest.place(relx=0.5, rely=0.6, anchor=CENTER)
+
+
 # Helper function
 def resetWritingLabels():
+    titleLogo.destroy()
+    startTest.destroy()
     # Text List
-    possibleTexts = [
-        'No matter how hard he tried, he could not give her a good explanation about what had happened. It did not even really make sense to him. All he knew was that he froze at the moment and no matter how hard he tried to react, nothing in his body allowed him to move. It was as if he had instantly become a statue and although he could see what was taking place, he could not move to intervene. He knew that was not a satisfactory explanation even though it was the truth.',
+    word_list = [
+        "mask", "delete", "bishop", "long", "leak", "escape", "colony", "raise", "remedy", "yearn",
+        "cake", "shell", "ball", "stake", "menu", "mail", "hill", "prize", "am", "insist", "export",
+        "beach", "ensure", "stain", "berry", "tent", "color", "tired", "easy", "helmet", "free",
+        "carry", "fork", "future", "swarm", "remind", "fare", "inject", "output", "form", "rally",
+        "pest", "video", "angel", "twin", "ladder", "sleep", "bury", "sharp", "lack", "gown", "black",
+        "length", "center", "weapon", "aloof", "fail", "host", "union", "lay", "grain", "series",
+        "person", "think", "use", "train", "slip", "trace", "shape", "money", "club", "whole",
+        "drama", "thaw", "offset", "smell", "essay", "review", "horn", "grudge", "unlike", "member",
+        "barrel", "light", "right", "favor", "rich", "drill", "regret", "fur", "will", "pass",
+        "late", "turkey", "role", "throne", "settle", "sting", "tune", "preach"
     ]
     # Chosing one of the texts randomly with the choice function
-    text = random.choice(possibleTexts).lower()
+    listCopy = word_list
+    text = ""
+    while listCopy:
+        temp = random.choice(word_list)
+        listCopy.remove(temp)
+        text += temp
+        text += " "
 
     # defining where the text is split
     splitPoint = 0
@@ -69,7 +96,7 @@ def stopTest():
     labelLeft.destroy()
 
     global resultLabel
-    resultLabel = Label(root, text=f'Words per Minute: {amountWords}', fg='black')
+    resultLabel = Label(root, text=f'Words per Minute: {amountWords}', fg='white')
     resultLabel.place(relx=0.5, rely=0.4, anchor=CENTER)
 
     # button to restart
@@ -108,6 +135,6 @@ def keyPress(event=None):
         pass
 
 
-resetWritingLabels()
+titleScreen()
 
 root.mainloop()
