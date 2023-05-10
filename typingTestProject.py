@@ -18,7 +18,7 @@ totalTime = 60000
 
 def titleScreen():
     global titleLogo
-    titleLogo = Label(root, text=f'Typing Test', fg='black',bg="blue")
+    titleLogo = Label(root, text=f'Typing Test', fg='black')
     titleLogo.place(relx=0.5, rely=0.3, anchor=N)
 
     global modeSelection
@@ -125,7 +125,7 @@ def stopTest():
 
     # calculates amount of words typed
     amountWords = len(labelLeft.cget('text'))
-    wpm = amountWords/5
+    wpm = amountWords//5
     if totalTime == 15000:
         wpm *= 4
     elif totalTime == 30000:
@@ -137,7 +137,7 @@ def stopTest():
     labelLeft.destroy()
 
     global resultLabel
-    resultLabel = Label(root, text=f'Words per Minute: {wpm}', fg='white')
+    resultLabel = Label(root, text=f'Words per Minute: {wpm}', fg='black')
     resultLabel.place(relx=0.5, rely=0.4, anchor=CENTER)
 
     # button to restart
@@ -154,12 +154,16 @@ def restart():
 
 
 def addSecond():
-    global secondsPassed
-    secondsPassed += 1
-    timeLeftLabel.configure(text=f'{secondsPassed} Seconds')
+    #bypass minor error
+    try:
+        global secondsPassed
+        secondsPassed += 1
+        timeLeftLabel.configure(text=f'{secondsPassed} Seconds')
 
-    if writeable:
-        root.after(1000, addSecond)
+        if writeable:
+            root.after(1000, addSecond)
+    except:
+        pass
 
 
 def keyPress(event=None):
