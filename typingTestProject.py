@@ -172,7 +172,7 @@ def stopTest():
     resultButton.place(relx=0.5, rely=0.6, anchor=CENTER)
 
 
-# destorys results and returns to title screen
+# destroys results and returns to title screen
 def restart():
     resultLabel.destroy()
     resultButton.destroy()
